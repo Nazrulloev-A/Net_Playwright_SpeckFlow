@@ -1,0 +1,59 @@
+# Build results
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml
+*.codecoverage
+
+# Playwright generated files
+**/.playwright/
+playwright-report/
+playwright/.cache/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Node modules (if any Playwright install pulls these)
+node_modules/
+
+# Global .NET artifacts
+project.lock.json
+project.fragment.lock.json
+
+# Nuke Build
+.nuke/
+
+# Other temp
+*.tmp
+*.temp
+
+node/
+**/node/
+**/node_modules/
