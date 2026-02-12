@@ -1,87 +1,87 @@
-using System.Reflection;
-using WebOrders_PW.Fixtures;
-using WebOrders_PW.PageObjects;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Playwright;
-using Reqnroll;
 using Reqnroll.BoDi;
 using Reqnroll.Tracing;
+using System.Reflection;
+using TechTalk.SpecFlow;
+using WebOrders_PW.PageObjects;
 
-namespace DemoFramewrok.Hooks;
-
-[Binding]
-public class TestHooks
+namespace DemoFramewrok.Hooks
 {
-    private readonly BasePage _basePage;
-
-    public TestHooks(BasePage basePage)
+    [Binding]
+    public class TestHooks
     {
-        _basePage = basePage;
-    }
+        private readonly BasePage _basePage;
+        private Fixtures.WebDriverFixture webDriverFixture;
 
-    public Fixtures.WebDriverFixture webDriverFixture;
-
-    [BeforeScenario]
-    public async Task CreateConfig(IObjectContainer container, ScenarioContext context)
-    {
-        Console.WriteLine("****** Test Hook - BeforeScenario - Started -" + context.ScenarioInfo.Title);
-        
-        if (_basePage.Config is null)
+        public TestHooks(BasePage basePage)
         {
-            _basePage.Config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
-                .AddUserSecrets(typeof(TestHooks).GetTypeInfo().Assembly)
-                .AddEnvironmentVariables()
-                .Build();
+            _basePage = basePage;
         }
 
-        container.RegisterInstanceAs(_basePage.Config);
-
-        webDriverFixture = new Fixtures.WebDriverFixture(_basePage.Config);
-        await webDriverFixture.InitializeAsync();
-        _basePage.Browser = webDriverFixture.Browser;
-
-        // ✅ Hardcoded viewport size (1920x1080)
-        _basePage.BrowserContext = await _basePage.Browser.NewContextAsync(new BrowserNewContextOptions
+        [BeforeScenario]
+        public async Task BeforeScenario(IObjectContainer container, ScenarioContext context)
         {
-            ViewportSize = new ViewportSize
+            Console.WriteLine("****** Test Hook - BeforeScenario - Started - " + context.ScenarioInfo.Title);
+
+            if (_basePage.Config is null)
             {
-                Width = 1920,
-                Height = 1080
+                _basePage.Config = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+                    .AddUserSecrets(typeof(TestHooks).GetTypeInfo().Assembly)
+                    .AddEnvironmentVariables()
+                    .Build();
             }
-        });
 
-        _basePage.Page = await _basePage.BrowserContext.NewPageAsync();
-        _basePage.Page.SetDefaultTimeout(60000);
+            container.RegisterInstanceAs(_basePage.Config);
 
-        container.RegisterInstanceAs(_basePage.Page);
-        container.RegisterInstanceAs(_basePage.Browser);
+            webDriverFixture = new Fixtures.WebDriverFixture(_basePage.Config);
+            await webDriverFixture.InitializeAsync();
+            _basePage.Browser = webDriverFixture.Browser;
 
-        Console.WriteLine("****** Test Hook - BeforeScenario - End");
-    }
-
-    [AfterScenario]
-    public async Task AfterScenario(IObjectContainer container, ScenarioContext context)
-    {
-        Console.WriteLine("****** Test Hook - AfterScenario - Started_" + context.ScenarioInfo.Title);
-
-        string fileNameBase = string.Format("Fail_{0}", context.ScenarioInfo.Title.ToIdentifier());
-        var browser = _basePage.Browser;
-        var page = _basePage.Page;
-
-        if (context.TestError != null)
-        {
-            await page.ScreenshotAsync(new()
+            _basePage.BrowserContext = await _basePage.Browser.NewContextAsync(new BrowserNewContextOptions
             {
-                Path = fileNameBase + ".png",
-                FullPage = true,
+                ViewportSize = new ViewportSize { Width = 1920, Height = 1080 }
             });
+
+            _basePage.Page = await _basePage.BrowserContext.NewPageAsync();
+            _basePage.Page.SetDefaultTimeout(60000);
+
+            container.RegisterInstanceAs(_basePage.Page);
+            container.RegisterInstanceAs(_basePage.Browser);
+
+            Console.WriteLine("****** Test Hook - BeforeScenario - End");
         }
 
-        await browser.CloseAsync();
-        await browser.DisposeAsync();
+        [AfterScenario]
+        public async Task AfterScenario(IObjectContainer container, ScenarioContext context)
+        {
+            Console.WriteLine("****** Test Hook - AfterScenario - Started - " + context.ScenarioInfo.Title);
 
-        Console.WriteLine("****** Test Hook - AfterScenario - End");
+            if (context.TestError != null)
+            {
+                var resultsDir = "allure-results";
+                var screenshotFileName = $"{resultsDir}/Fail_{context.ScenarioInfo.Title.ToIdentifier()}.png";
+
+                if (!System.IO.Directory.Exists(resultsDir))
+                {
+                    System.IO.Directory.CreateDirectory(resultsDir);
+                }
+
+                await _basePage.Page.ScreenshotAsync(new PageScreenshotOptions
+                {
+                    Path = screenshotFileName,
+                    FullPage = true,
+                });
+
+                Console.WriteLine($"Screenshot saved: {screenshotFileName}");
+            }
+
+            await _basePage.Browser.CloseAsync();
+            await _basePage.Browser.DisposeAsync();
+
+            Console.WriteLine("****** Test Hook - AfterScenario - End");
+        }
     }
 }

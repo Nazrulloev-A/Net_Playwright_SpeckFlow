@@ -17,21 +17,21 @@ namespace WebOrders_PW.Features
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class LoginFeature : object, global::Xunit.IClassFixture<LoginFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class WebOrdersPageFunctionalitiesFeature : object, global::Xunit.IClassFixture<WebOrdersPageFunctionalitiesFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features", "Login", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features", "Web Orders Page Functionalities", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Login.feature"
+#line 1 "Order.feature"
 #line hidden
         
-        public LoginFeature(LoginFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public WebOrdersPageFunctionalitiesFeature(WebOrdersPageFunctionalitiesFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace WebOrders_PW.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Login.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Order.feature.ndjson", 3);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,29 +133,20 @@ namespace WebOrders_PW.Features
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="User is able to Login id and verify the page")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Login")]
-        [global::Xunit.TraitAttribute("Description", "User is able to Login id and verify the page")]
-        [global::Xunit.TraitAttribute("Category", "SmokeSuite")]
-        [global::Xunit.TraitAttribute("Category", "LoginTest")]
+        [global::Xunit.SkippableTheoryAttribute(DisplayName="Validate grid, delete all orders and add a new one")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Web Orders Page Functionalities")]
+        [global::Xunit.TraitAttribute("Description", "Validate grid, delete all orders and add a new one")]
         [global::Xunit.InlineDataAttribute("Staff", "0", new string[0])]
-        public async global::System.Threading.Tasks.Task UserIsAbleToLoginIdAndVerifyThePage(string userRole, string @__pickleIndex, string[] exampleTags)
+        public async global::System.Threading.Tasks.Task ValidateGridDeleteAllOrdersAndAddANewOne(string userRole, string @__pickleIndex, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "SmokeSuite",
-                    "LoginTest"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("userRole", userRole);
             string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("User is able to Login id and verify the page", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Validate grid, delete all orders and add a new one", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 4
+#line 3
     this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -165,59 +156,32 @@ namespace WebOrders_PW.Features
             else
             {
                 await this.ScenarioStartAsync();
-#line 5
+#line 4
         await testRunner.GivenAsync("user navigates to Test home page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 6
+#line 5
         await testRunner.WhenAsync(string.Format("user logs in using username and password for {0}", userRole), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
+#line 6
+        await testRunner.GivenAsync("I am on the Web Orders page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
 #line 7
-        await testRunner.ThenAsync("user successfully logged out", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+        await testRunner.ThenAsync("I should see the orders grid with at least one record", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.SkippableTheoryAttribute(DisplayName="User  should not able to Login with different User role id")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Login")]
-        [global::Xunit.TraitAttribute("Description", "User  should not able to Login with different User role id")]
-        [global::Xunit.TraitAttribute("Category", "SmokeSuite")]
-        [global::Xunit.TraitAttribute("Category", "LoginTest")]
-        [global::Xunit.InlineDataAttribute("Invalid", "1", new string[0])]
-        public async global::System.Threading.Tasks.Task UserShouldNotAbleToLoginWithDifferentUserRoleId(string userRole, string @__pickleIndex, string[] exampleTags)
-        {
-            string[] @__tags = new string[] {
-                    "SmokeSuite",
-                    "LoginTest"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("userRole", userRole);
-            string pickleIndex = @__pickleIndex;
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("User  should not able to Login with different User role id", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 15
-    this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line 8
+        await testRunner.WhenAsync("I select all orders", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 16
-        await testRunner.GivenAsync("user navigates to Test home page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 9
+        await testRunner.AndAsync("I click the Delete Selected button", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 17
-        await testRunner.WhenAsync(string.Format("user logs in using invalid username and password for {0}", userRole), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 10
+        await testRunner.ThenAsync("the grid should be empty or show a deletion success message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-#line 18
-        await testRunner.ThenAsync("error message should pop up", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 11
+        await testRunner.WhenAsync("I navigate to the Order page", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 12
+        await testRunner.AndAsync("I fill in and submit a new order", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -230,12 +194,12 @@ namespace WebOrders_PW.Features
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await LoginFeature.FeatureSetupAsync();
+                await WebOrdersPageFunctionalitiesFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await LoginFeature.FeatureTearDownAsync();
+                await WebOrdersPageFunctionalitiesFeature.FeatureTearDownAsync();
             }
         }
     }

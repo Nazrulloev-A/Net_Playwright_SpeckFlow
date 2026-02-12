@@ -1,0 +1,9 @@
+﻿{
+  "Plugins": [
+    {
+      "Name": "Allure",
+      "Enabled": true,
+      "ResultsFolder": "allure-results"
+    }
+  ]
+}
