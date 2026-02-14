@@ -5,6 +5,7 @@ using Reqnroll.Tracing;
 using System.Reflection;
 using TechTalk.SpecFlow;
 using WebOrders_PW.PageObjects;
+using Allure.Net.Commons;
 
 namespace DemoFramewrok.Hooks
 {
@@ -54,34 +55,90 @@ namespace DemoFramewrok.Hooks
             Console.WriteLine("****** Test Hook - BeforeScenario - End");
         }
 
+        //[AfterScenario]
+        //public async Task AfterScenario(IObjectContainer container, ScenarioContext context)
+        //{
+        //    Console.WriteLine("****** Test Hook - AfterScenario - Started - " + context.ScenarioInfo.Title);
+
+        //    if (context.TestError != null)
+        //    {
+        //        var resultsDir = "allure-results";
+        //        var screenshotFileName = $"{resultsDir}/Fail_{context.ScenarioInfo.Title.ToIdentifier()}.png";
+
+        //        if (!System.IO.Directory.Exists(resultsDir))
+        //        {
+        //            System.IO.Directory.CreateDirectory(resultsDir);
+        //        }
+
+        //        await _basePage.Page.ScreenshotAsync(new PageScreenshotOptions
+        //        {
+        //            Path = screenshotFileName,
+        //            FullPage = true,
+        //        });
+
+        //        Console.WriteLine($"Screenshot saved: {screenshotFileName}");
+        //    }
+
+        //    await _basePage.Browser.CloseAsync();
+        //    await _basePage.Browser.DisposeAsync();
+
+        //    Console.WriteLine("****** Test Hook - AfterScenario - End");
+        //}
+
         [AfterScenario]
         public async Task AfterScenario(IObjectContainer container, ScenarioContext context)
         {
             Console.WriteLine("****** Test Hook - AfterScenario - Started - " + context.ScenarioInfo.Title);
 
-            if (context.TestError != null)
+            try
             {
-                var resultsDir = "allure-results";
-                var screenshotFileName = $"{resultsDir}/Fail_{context.ScenarioInfo.Title.ToIdentifier()}.png";
-
-                if (!System.IO.Directory.Exists(resultsDir))
+                if (context.TestError != null && _basePage?.Page != null)
                 {
-                    System.IO.Directory.CreateDirectory(resultsDir);
+                    var resultsDir = "allure-results";
+                    Directory.CreateDirectory(resultsDir);
+
+                    var safeScenarioName = context.ScenarioInfo.Title
+                        .Replace(" ", "_")
+                        .Replace(":", "")
+                        .Replace("/", "");
+
+                    var screenshotPath = Path.Combine(
+                        resultsDir,
+                        $"Fail_{safeScenarioName}_{DateTime.Now:yyyyMMdd_HHmmss}.png"
+                    );
+
+                    var screenshotBytes = await _basePage.Page.ScreenshotAsync(new PageScreenshotOptions
+                    {
+                        Path = screenshotPath,
+                        FullPage = true
+                    });
+
+                    // Attach to Allure
+                    AllureApi.AddAttachment(
+                        "Failure Screenshot",
+                        "image/png",
+                        screenshotBytes
+                    );
+
+                    Console.WriteLine($"Screenshot captured and attached: {screenshotPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Screenshot capture failed: {ex.Message}");
+            }
+            finally
+            {
+                if (_basePage?.Browser != null)
+                {
+                    await _basePage.Browser.CloseAsync();
+                    await _basePage.Browser.DisposeAsync();
                 }
 
-                await _basePage.Page.ScreenshotAsync(new PageScreenshotOptions
-                {
-                    Path = screenshotFileName,
-                    FullPage = true,
-                });
-
-                Console.WriteLine($"Screenshot saved: {screenshotFileName}");
+                Console.WriteLine("****** Test Hook - AfterScenario - End");
             }
-
-            await _basePage.Browser.CloseAsync();
-            await _basePage.Browser.DisposeAsync();
-
-            Console.WriteLine("****** Test Hook - AfterScenario - End");
         }
+
+
     }
 }
