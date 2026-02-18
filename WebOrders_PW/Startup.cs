@@ -1,6 +1,10 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
+using WebOrders_PW.PageObjects;
+using WebOrders_PW.PageObjects.OrderPage;
+using WebOrders_PW.TestData;
 
 namespace WebOrders_PW;
 
@@ -17,5 +21,13 @@ public class Startup
             .Build();
 
         hostBuilder.ConfigureHostConfiguration(builder => builder.AddConfiguration(config));
+        hostBuilder.ConfigureServices(services =>
+        {
+            services.AddSingleton<OrderFaker>();
+            services.AddScoped<AddNewOrder>();
+            services.AddScoped<OrderPage>();
+            services.AddScoped<LoginPage>();
+        });
+
     }
 }

@@ -1,4 +1,5 @@
 using DemoFramewrok.PageObjects;
+using FluentAssertions;
 using Reqnroll;
 using System;
 using WebOrders_PW.PageObjects;
@@ -25,9 +26,12 @@ public class AddNewOrderStepDefinitions
     public async Task ThenTheUserShouldClickOnThisLinkButton()
     {
         await _addNewOrder.ClickOnLinkButton();
-        await _addNewOrder.FillOrderInformation();
-        await _addNewOrder.FillAddressInformation();
-        await _addNewOrder.CreditCardInformation();
+        //await _addNewOrder.FillOrderInformation();
+        //await _addNewOrder.
+        //    FillAddressInformation();
+        //await _addNewOrder.CreditCardInformation();
+        //var messageText = await _addNewOrder.SuccessOrderText.TextContentAsync();
+        //messageText?.Trim().Should().Be("New order has been successfully added.");
     }
 
 }

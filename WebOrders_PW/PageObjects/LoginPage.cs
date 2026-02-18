@@ -1,9 +1,7 @@
-using WebOrders_PW.Enum;
-using WebOrders_PW.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Playwright;
-using WebOrders_PW.PageObjects;
-using Xunit;
+using WebOrders_PW.Enum;
+using WebOrders_PW.Models;
 
 namespace WebOrders_PW.PageObjects;
 
