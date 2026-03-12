@@ -96,7 +96,7 @@ public class OrdersStepDefinitions
     private readonly AddNewOrder _addNewOrder;
     private readonly OrderFaker _orderFaker;
 
-    private Order _order; 
+    private Order? _order; // Made nullable to address CS8618
 
     public OrdersStepDefinitions(
         BasePage basePage,
@@ -146,17 +146,13 @@ public class OrdersStepDefinitions
         await _orderPage.ClickOnLink();
     }
 
-    
     [When("I fill in and submit a new order")]
     public async Task WhenIFillInAndSubmitANewOrder()
     {
-        
         _order = _orderFaker.GetOrderGenerator();
 
-       
         await _addNewOrder.FillOrderInformation(_order);
         await _addNewOrder.FillAddressInformation(_order);
         await _addNewOrder.FillPaymentInformation(_order);
     }
-
 }

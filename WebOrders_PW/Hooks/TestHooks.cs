@@ -1,11 +1,10 @@
+using Allure.Net.Commons;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Playwright;
 using Reqnroll.BoDi;
-using Reqnroll.Tracing;
 using System.Reflection;
 using TechTalk.SpecFlow;
 using WebOrders_PW.PageObjects;
-using Allure.Net.Commons;
 
 namespace DemoFramewrok.Hooks
 {
